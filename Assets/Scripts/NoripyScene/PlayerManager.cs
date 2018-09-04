@@ -10,8 +10,9 @@ public class PlayerManager : MonoBehaviour {
     public LayerMask blockLayer;//ブロックレイヤー
 
     private Rigidbody2D rbody;//プレイヤー制御用rigidbody2D
+    private Transform trans;//プレイヤーの座標系
 
-    private const float MOVE_SPEED = 3;//移動速度固定値
+    private const float MOVE_SPEED = 5;//移動速度固定値
     private float moveSpeed;//移動速度
     private float jumpPower = 400;//ジャンプの力
     private bool goJump = false;//ジャンプしたか否か
@@ -37,15 +38,26 @@ public class PlayerManager : MonoBehaviour {
 	void Start () {
         audioSource = gameManager.GetComponent<AudioSource>();
         rbody = GetComponent<Rigidbody2D>();
+        trans = GetComponent<Transform>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
         canJump =
-            Physics2D.Linecast(transform.position - (transform.right * 0.3f),
-                transform.position - (transform.up * 0.1f), blockLayer) ||
-            Physics2D.Linecast(transform.position + (transform.right * 0.3f),
-                transform.position - (transform.up * 0.1f), blockLayer);
+            Physics2D.Linecast(trans.position - (trans.right * 0.3f),
+                trans.position - (trans.up * 0.1f), blockLayer) ||
+            Physics2D.Linecast(trans.position + (trans.right * 0.3f),
+                trans.position - (trans.up * 0.1f), blockLayer);
+
+        /*
+        Physics2D.Linecast(transform.position - (transform.right * 0.3f),
+            transform.position - (transform.up * 0.1f), blockLayer) ||
+        Physics2D.Linecast(transform.position + (transform.right * 0.3f),
+            transform.position - (transform.up * 0.1f), blockLayer);
+        */
+
+        //Debug.DrawLine(transform.position - (transform.right * 0.3f), transform.position - (transform.up * 0.1f), Color.red);
+        //Debug.DrawLine(transform.position + (transform.right * 0.3f), transform.position - (transform.up * 0.1f), Color.red);
 
         if (!usingButtons)
         {
@@ -69,6 +81,7 @@ public class PlayerManager : MonoBehaviour {
 
             if (Input.GetKeyDown("space"))
             {
+                //Debug.Log("Called");
                 PushJumpButton();
             }
         }
@@ -84,11 +97,11 @@ public class PlayerManager : MonoBehaviour {
                 break;
             case MOVE_DIR.LEFT://左に移動
                 moveSpeed = MOVE_SPEED * -1;
-                transform.localScale = new Vector2(-1,1);
+                transform.localScale = new Vector2(-5,5);
                 break;
             case MOVE_DIR.RIGHT://右に移動
                 moveSpeed = MOVE_SPEED;
-                transform.localScale = new Vector2(1,1);
+                transform.localScale = new Vector2(5,5);
                 break;
         }
 
@@ -106,6 +119,7 @@ public class PlayerManager : MonoBehaviour {
     //ジャンプボタンを押した
     public void PushJumpButton()
     {
+        Debug.Log(canJump);
         if (canJump)
         {
             goJump = true;
@@ -131,5 +145,38 @@ public class PlayerManager : MonoBehaviour {
     {
         moveDirection = MOVE_DIR.STOP;
         usingButtons = false;
+    }
+
+    //衝突処理
+    void OnTriggerEnter2D(Collider2D col)
+    {
+        //プレイ中でなければ衝突判定は行わない
+        if (gameManager.GetComponent<GameManager>().gameMode != GameManager.GAME_MODE.PLAY)
+        {
+            return;
+        }
+        if(col.gameObject.tag == "Needle" ||
+            col.gameObject.tag == "High_Needle")
+        {
+            gameManager.GetComponent<GameManager>().GameOver();
+            DestroyPlayer();
+        }
+    }
+
+    //プレイヤーオブジェクト削除処理
+    void DestroyPlayer()
+    {
+        gameManager.GetComponent<GameManager>().gameMode = GameManager.GAME_MODE.GAMEOVER;
+        //コライダーを削除
+        CircleCollider2D circleCollider = GetComponent<CircleCollider2D>();
+        BoxCollider2D boxCollider = GetComponent<BoxCollider2D>();
+        Destroy(circleCollider);
+        Destroy(boxCollider);
+        //死亡アニメーション
+        Sequence animSet = DOTween.Sequence();
+        animSet.Append(transform.DOLocalMoveY(1.0f, 0.2f).SetRelative());
+        animSet.Append(transform.DOLocalMoveY(-60.0f, 1.0f).SetRelative());
+
+        Destroy(this.gameObject, 1.2f);
     }
 }
