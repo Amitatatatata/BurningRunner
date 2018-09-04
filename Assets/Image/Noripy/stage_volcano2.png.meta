@@ -1,12 +1,9 @@
 fileFormatVersion: 2
-guid: b12b850391563db4a8e19c46d9164f9b
+guid: 8babd656e9ba31b40a709aed96bf9676
 TextureImporter:
   fileIDToRecycleName:
-    21300000: stage_volcano_0
-    21300002: Block
-    21300004: Larva
-    21300006: Normal_Needle
-    21300008: High_Needle
+    21300000: Needle
+    21300002: High_Needle
   externalObjects: {}
   serializedVersion: 7
   mipmaps:
@@ -111,41 +108,41 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Block
+      name: Needle
       rect:
         serializedVersion: 2
-        x: 0
-        y: 80
-        width: 48
-        height: 48
+        x: 290
+        y: 97
+        width: 11
+        height: 14
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 828c42a74e1fb1d478e93f96378ddcbd
+      spriteID: 2986143c85c9ef74ca1723f81d846ae1
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Larva
+      name: High_Needle
       rect:
         serializedVersion: 2
-        x: 0
-        y: 140
-        width: 48
-        height: 48
+        x: 368
+        y: 96
+        width: 16
+        height: 31
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f39068dc3797c8140849bf17db7ce452
+      spriteID: b151432475fefe34ba6690722c9bb202
       vertices: []
       indices: 
       edges: []
@@ -153,7 +150,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 05b1f56ff9499ce488569606ff0e3004
+    spriteID: 55adf8c05a5225449b404f69c28cf69a
     vertices: []
     indices: 
     edges: []
