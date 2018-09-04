@@ -266,11 +266,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 61631940146633628, guid: f9885ad33acecad4ea89036c1ee25f34,
-        type: 2}
-      propertyPath: m_IsTrigger
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f9885ad33acecad4ea89036c1ee25f34, type: 2}
   m_IsPrefabAsset: 0
@@ -2544,7 +2539,7 @@ GameObject:
   - component: {fileID: 1723384935}
   m_Layer: 0
   m_Name: High_Needle
-  m_TagString: High_Needle
+  m_TagString: Needle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
