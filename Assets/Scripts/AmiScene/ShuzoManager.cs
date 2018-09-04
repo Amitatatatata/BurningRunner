@@ -14,6 +14,9 @@ public class ShuzoManager : MonoBehaviour {
     //trueの時にはジャンプできず、毎フレーム着地したか確認する。
     bool isJump = true;
 
+    //ジャンプ後数フレームは地面に触れたままなので、10フレームはジャンプ負荷にする
+    //そのためにフレーム数を数える変数
+    int frames = 0;
 
 	// Use this for initialization
 	void Start () {
@@ -28,7 +31,6 @@ public class ShuzoManager : MonoBehaviour {
 
     void FixedUpdate()
     {
-        Debug.Log(isJump);
         //プレイヤーを一定速度で常に右に移動させる。
         rBody.velocity = new Vector2(10.0f, rBody.velocity.y);
 
@@ -36,18 +38,19 @@ public class ShuzoManager : MonoBehaviour {
         camera.transform.position = new Vector3(transform.position.x, camera.transform.position.y, camera.transform.position.z);
 
         //Jump対応キーを押したらジャンプする。
-        if (Input.GetButtonDown("Jump")) Jump();
+        if (!isJump && Input.GetButtonDown("Jump")) Jump();
 
         //ジャンプ中の時、地面に着地したか確認する
-        if (isJump)
+        if (isJump && frames > 5)
         {
             //プレイヤーから二本の線を下に飛ばして地面に触れていたら着地している(isJump = false)とする。
             isJump = !(Physics2D.Linecast(transform.position + (Vector3.left * 0.3f),
-                transform.position + (Vector3.down * 0.2f), groundLayer) ||
+                transform.position + (Vector3.down * 0.1f), groundLayer) ||
                     Physics2D.Linecast(transform.position + (Vector3.right * 0.3f),
-                transform.position + (Vector3.down * 0.2f), groundLayer)
+                transform.position + (Vector3.down * 0.1f), groundLayer)
                 );
         }
+        else if (frames <= 5) frames++;
     }
 
     //炎演出を表示させる。
@@ -70,13 +73,12 @@ public class ShuzoManager : MonoBehaviour {
 
     public void Jump()
     {
-        if (isJump) return; 
-
         //rigidbodyに上向きの力を加えてジャンプさせる。
-        rBody.AddForce(new Vector2(0.0f, 300.0f));
+        rBody.AddForce(new Vector2(0.0f, 400.0f));
 
         //Jump中にする。
         isJump = true;
+        frames = 0;
     }
 
     //プレイヤーがゴールに触れたか判定する。
