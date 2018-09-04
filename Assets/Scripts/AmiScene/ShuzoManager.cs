@@ -8,19 +8,18 @@ public class ShuzoManager : MonoBehaviour {
     [SerializeField] private Camera camera;             //プレイヤーを追うカメラ
     [SerializeField] private LayerMask groundLayer;     //地面のレイヤー
     [SerializeField] private float speedX = 15.0f;
+    [SerializeField] private float jumpPower = 4000.0f;
 
-    private Animator animator;
     private Rigidbody2D rBody;
 
-    //trueの時にはジャンプできず、毎フレーム着地したか確認する。
-    bool isJump = true;
+    //jump可能かどうか
+    bool canJump = false;
 
     //元のスピード
     private float baseSpeedX;
 
 	// Use this for initialization
 	void Start () {
-        animator = GetComponent<Animator>();
         rBody = GetComponent<Rigidbody2D>();
         baseSpeedX = speedX;
 	}
@@ -32,6 +31,12 @@ public class ShuzoManager : MonoBehaviour {
 
     void FixedUpdate()
     {
+        canJump = (Physics2D.Linecast(transform.position + (Vector3.left * 0.3f),
+                transform.position + (Vector3.down * 0.1f), groundLayer) ||
+                    Physics2D.Linecast(transform.position + (Vector3.right * 0.3f),
+                transform.position + (Vector3.down * 0.1f), groundLayer)
+                && rBody.velocity.y < 0);
+        Debug.Log(canJump);
         //プレイヤーを一定速度で常に右に移動させる。
         rBody.velocity = new Vector2(speedX, rBody.velocity.y);
 
@@ -39,18 +44,10 @@ public class ShuzoManager : MonoBehaviour {
         camera.transform.position = new Vector3(transform.position.x, camera.transform.position.y, camera.transform.position.z);
 
         //Jump対応キーを押したらジャンプする。
-        if (!isJump && Input.GetButtonDown("Jump")) Jump();
+        if (canJump && Input.GetButtonDown("Jump")) Jump();
 
-        //ジャンプ中の時、地面に着地したか確認する
-        if (isJump && rBody.velocity.y < 0)
-        {
-            //プレイヤーから二本の線を下に飛ばして地面に触れていたら着地している(isJump = false)とする。
-            isJump = !(Physics2D.Linecast(transform.position + (Vector3.left * 0.3f),
-                transform.position + (Vector3.down * 0.1f), groundLayer) ||
-                    Physics2D.Linecast(transform.position + (Vector3.right * 0.3f),
-                transform.position + (Vector3.down * 0.1f), groundLayer)
-                );
-        }
+
+        
         
     }
 
@@ -58,7 +55,6 @@ public class ShuzoManager : MonoBehaviour {
     public void OnFrameMode()
     {
         //プレイヤーの動きを激しくする。
-        animator.speed = 2.0f;
         speedX *= 2;
         //炎をみえるようにする。
         frameImage.SetActive(true);
@@ -68,7 +64,6 @@ public class ShuzoManager : MonoBehaviour {
     public void OffFrameMode()
     {
         //プレイヤーの動きを元に戻す。
-        animator.speed = 1.0f;
         speedX = baseSpeedX;
         //炎を見えなくする。
         frameImage.SetActive(false);
@@ -77,10 +72,7 @@ public class ShuzoManager : MonoBehaviour {
     public void Jump()
     {
         //rigidbodyに上向きの力を加えてジャンプさせる。
-        rBody.AddForce(new Vector2(0.0f, 400.0f));
-
-        //Jump中にする。
-        isJump = true;
+        rBody.AddForce(new Vector2(0.0f, jumpPower));
     }
 
     
