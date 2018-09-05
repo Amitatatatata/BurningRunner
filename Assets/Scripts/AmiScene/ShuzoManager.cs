@@ -11,6 +11,9 @@ public class ShuzoManager : MonoBehaviour {
     [SerializeField] private float jumpPower = 4000.0f;
 
     private Rigidbody2D rBody;
+    private BoxCollider2D boxCollider;
+
+    bool isDead = false;
 
     //jump可能かどうか
     bool canJump = false;
@@ -21,6 +24,7 @@ public class ShuzoManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         rBody = GetComponent<Rigidbody2D>();
+        boxCollider = GetComponent<BoxCollider2D>();
         baseSpeedX = speedX;
 	}
 	
@@ -31,12 +35,17 @@ public class ShuzoManager : MonoBehaviour {
 
     void FixedUpdate()
     {
+        if(isDead)
+        {
+            rBody.velocity = new Vector2(0, 50f);
+            return;
+        }
+
         canJump = (Physics2D.Linecast(transform.position + (Vector3.left * 0.3f),
                 transform.position + (Vector3.down * 0.1f), groundLayer) ||
                     Physics2D.Linecast(transform.position + (Vector3.right * 0.3f),
                 transform.position + (Vector3.down * 0.1f), groundLayer)
                 && rBody.velocity.y < 0);
-        Debug.Log(canJump);
         //プレイヤーを一定速度で常に右に移動させる。
         rBody.velocity = new Vector2(speedX, rBody.velocity.y);
 
@@ -84,11 +93,18 @@ public class ShuzoManager : MonoBehaviour {
             transform.position = new Vector3(0, 0, 0);
         }
 
+        //ラケットに触れたら興奮モード
         if(col.gameObject.tag == "Racket")
         {
             Destroy(col.gameObject);
             OnFrameMode();
             Invoke("OffFrameMode", 1.0f);
+        }
+        
+        //トゲかマグマに当たったら死亡
+        if(col.gameObject.tag == "Needle")
+        {
+            Debug.Log("Dead.");
         }
     }
 }
