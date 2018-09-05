@@ -9,6 +9,7 @@ public class AmiGameManager : MonoBehaviour {
     [SerializeField] Text scoreText;
     [SerializeField] Image tweetButton; //ツイートボタン用テキスト　ゲーム終了時にアクティブにする
     [SerializeField] Button titleButton; //タイトルへ戻るボタン　ゲーム終了時にアクティブにする
+    [SerializeField] Button retryButton; //リトライボタン　シーンを読み直してもう一度遊ぶ
 
     private int score = 0;
 
@@ -18,7 +19,10 @@ public class AmiGameManager : MonoBehaviour {
     //自分のAudioSource
     private AudioSource audioSource;
 
-    [SerializeField] AudioClip selectClip;
+    //効果音関連
+    [SerializeField] AudioClip[] shuzoResultClips;
+
+
 
     // Use this for initialization
     void Start () {
@@ -39,6 +43,8 @@ public class AmiGameManager : MonoBehaviour {
     public void FinishGame()
     {
         isEnd = true;
+        audioSource.Stop();
+        audioSource.PlayOneShot(shuzoResultClips[Random.Range(0, shuzoResultClips.Length)]);
         Invoke("ShowTweetButtonAndRanking", 1.0f);
     }
 
@@ -47,11 +53,11 @@ public class AmiGameManager : MonoBehaviour {
         naichilab.RankingLoader.Instance.SendScoreAndShowRanking(score);
         tweetButton.gameObject.SetActive(true);
         titleButton.gameObject.SetActive(true);
+        retryButton.gameObject.SetActive(true);
     }
 
     public void Tweet()
     {
-        audioSource.PlayOneShot(selectClip);
         naichilab.UnityRoomTweet.Tweet("burning_runner",
             "【Burning Runner】で" + score + "点だったよ！！",
             "unityroom", "unity1week");
@@ -60,5 +66,10 @@ public class AmiGameManager : MonoBehaviour {
     public void OnClickTitleButton()
     {
         SceneManager.LoadScene("TitleScene");
+    }
+
+    public void OnClickRetryButton()
+    {
+        SceneManager.LoadScene("TestScene2");
     }
 }

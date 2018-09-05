@@ -30,7 +30,6 @@ public class ShuzoManager : MonoBehaviour {
     [SerializeField] AudioClip jumpClip;
     [SerializeField] AudioClip powerUpClip;
     [SerializeField] AudioClip[] shuzoJumpClips;
-    [SerializeField] AudioClip[] shuzoFinishClips;
 
     //元の横方向のスピード
     private float baseSpeedX;
@@ -55,14 +54,14 @@ public class ShuzoManager : MonoBehaviour {
                 transform.position + (Vector3.down * 1f) + (Vector3.left * 3f), groundLayer)
                 && rBody.velocity.y < 0);
 
-        /*
+        
         Debug.Log(canJump);
 
         Debug.DrawLine(transform.position + (Vector3.left * 8.2f),
                 transform.position + (Vector3.down * 1f) + (Vector3.left * 3f));
         Debug.DrawLine(transform.position + (Vector3.right * 1.4f),
                 transform.position + (Vector3.down * 1f) + (Vector3.left * 3f));
-        */
+        
 
         //ジャンプキーを押し始めたとき
         if (Input.GetButtonDown("Jump")) JumpButtonDown();
@@ -96,7 +95,7 @@ public class ShuzoManager : MonoBehaviour {
         //炎をみえるようにする。
         frameImage.SetActive(true);
 
-        audioSource.PlayOneShot(powerUpClip);
+        audioSource.PlayOneShot(powerUpClip, 0.2f);
     }
 
     //炎演出を非表示にする。
@@ -129,8 +128,8 @@ public class ShuzoManager : MonoBehaviour {
         //rigidbodyに上向きの力を加えてジャンプさせる。
         rBody.AddForce(new Vector2(0.0f, jumpPower * jumpPowerRate));
 
-        audioSource.PlayOneShot(jumpClip);
-
+        audioSource.PlayOneShot(jumpClip, 0.2f);
+        audioSource.PlayOneShot(shuzoJumpClips[Random.Range(0, shuzoJumpClips.Length)], 1.0f);
     }
 
 
