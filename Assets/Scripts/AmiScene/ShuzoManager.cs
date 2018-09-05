@@ -34,6 +34,35 @@ public class ShuzoManager : MonoBehaviour {
         baseSpeedX = speedX;
 	}
 
+    void Update()
+    {
+        
+        if (isDead) return;
+
+        //プレイヤーの足元から下方向に2本の線を飛ばし、Blockに触れていればジャンプ可能(true)
+        canJump = (Physics2D.Linecast(transform.position + (Vector3.left * 8.2f),
+                transform.position + (Vector3.down * 1f) + (Vector3.left * 3f), groundLayer) ||
+                    Physics2D.Linecast(transform.position + (Vector3.right * 1.4f),
+                transform.position + (Vector3.down * 1f) + (Vector3.left * 3f), groundLayer)
+                && rBody.velocity.y < 0);
+
+        /*
+        Debug.Log(canJump);
+
+        Debug.DrawLine(transform.position + (Vector3.left * 8.2f),
+                transform.position + (Vector3.down * 1f) + (Vector3.left * 3f));
+        Debug.DrawLine(transform.position + (Vector3.right * 1.4f),
+                transform.position + (Vector3.down * 1f) + (Vector3.left * 3f));
+        */
+
+        //ジャンプキーを押し始めたとき
+        if (Input.GetButtonDown("Jump")) JumpButtonDown();
+        //ジャンプキーを押しているとき
+        if (Input.GetButton("Jump")) OnJumpButton();
+        //ジャンプキーを離したときにジャンプする
+        if (canJump && Input.GetButtonUp("Jump")) JumpButtonUp();
+    }
+
     void FixedUpdate()
     {
         if(isDead)
@@ -48,19 +77,9 @@ public class ShuzoManager : MonoBehaviour {
         //プレイヤーをカメラの真ん中に常に捉える。
         camera.transform.position = new Vector3(transform.position.x, camera.transform.position.y, camera.transform.position.z);
 
-        //プレイヤーの足元から下方向に2本の線を飛ばし、Blockに触れていればジャンプ可能(true)
-        canJump = (Physics2D.Linecast(transform.position + (Vector3.left * 8f),
-                transform.position + (Vector3.down * 1f), groundLayer) ||
-                    Physics2D.Linecast(transform.position + (Vector3.right * 8f),
-                transform.position + (Vector3.down * 1f), groundLayer)
-                && rBody.velocity.y < 0);
+        
 
-        //ジャンプキーを押し始めたとき
-        if (Input.GetButtonDown("Jump")) JumpButtonDown();
-        //ジャンプキーを押しているとき
-        if (Input.GetButton("Jump")) OnJumpButton();
-        //ジャンプキーを離したときにジャンプする
-        if (canJump && Input.GetButtonUp("Jump")) JumpButtonUp();
+        
 
 
         
