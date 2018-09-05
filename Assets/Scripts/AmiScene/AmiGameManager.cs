@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class AmiGameManager : MonoBehaviour {
     //Scoreを表示させるテキスト
@@ -48,5 +49,10 @@ public class AmiGameManager : MonoBehaviour {
         naichilab.UnityRoomTweet.Tweet("burning_runner",
             "【Burning Runner】で" + score + "点だったよ！！",
             "unityroom", "unity1week");
+    }
+
+    public void OnClickTitleButton()
+    {
+        SceneManager.LoadScene("TitleScene");
     }
 }
