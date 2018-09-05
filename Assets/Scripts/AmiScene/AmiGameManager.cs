@@ -15,9 +15,14 @@ public class AmiGameManager : MonoBehaviour {
     //ゲーム終了かどうか
     private bool isEnd = false;
 
+    //自分のAudioSource
+    private AudioSource audioSource;
+
+    [SerializeField] AudioClip selectClip;
+
     // Use this for initialization
     void Start () {
-		
+        audioSource = GetComponent<AudioSource>();
 	}
 	
 	// Update is called once per frame
@@ -46,6 +51,7 @@ public class AmiGameManager : MonoBehaviour {
 
     public void Tweet()
     {
+        audioSource.PlayOneShot(selectClip);
         naichilab.UnityRoomTweet.Tweet("burning_runner",
             "【Burning Runner】で" + score + "点だったよ！！",
             "unityroom", "unity1week");

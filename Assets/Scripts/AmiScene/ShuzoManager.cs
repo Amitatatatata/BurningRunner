@@ -11,9 +11,10 @@ public class ShuzoManager : MonoBehaviour {
     [SerializeField] private float jumpPower = 4000.0f; //プレイヤーのジャンプ力
     [SerializeField] private AmiGameManager amiGameManager; //ゲーム制御用スクリプト（ゲームの終了、スコアの計測など）
 
-    //自分自身のrigidbodyとcollider
+    //自分自身のrigidbodyとcollider、AudioSource
     private Rigidbody2D rBody;
     private BoxCollider2D boxCollider;
+    private AudioSource audioSource;
 
     //死んだかどうか
     bool isDead = false;
@@ -25,15 +26,23 @@ public class ShuzoManager : MonoBehaviour {
     float jumpPowerRate = 0.0f;
 
 
+    //効果音関連
+    [SerializeField] AudioClip jumpClip;
+    [SerializeField] AudioClip powerUpClip;
+    [SerializeField] AudioClip[] shuzoJumpClips;
+    [SerializeField] AudioClip[] shuzoFinishClips;
+
     //元の横方向のスピード
     private float baseSpeedX;
 
 	void Start () {
         rBody = GetComponent<Rigidbody2D>();
         boxCollider = GetComponent<BoxCollider2D>();
+        audioSource = GetComponent<AudioSource>();
         baseSpeedX = speedX;
 	}
 
+    //Input処理はFixedUpdateに入れるとうまく動かない
     void Update()
     {
         
@@ -77,13 +86,6 @@ public class ShuzoManager : MonoBehaviour {
         //プレイヤーをカメラの真ん中に常に捉える。
         camera.transform.position = new Vector3(transform.position.x, camera.transform.position.y, camera.transform.position.z);
 
-        
-
-        
-
-
-        
-        
     }
 
     //炎演出を表示させる。
@@ -93,6 +95,8 @@ public class ShuzoManager : MonoBehaviour {
         speedX *= 2;
         //炎をみえるようにする。
         frameImage.SetActive(true);
+
+        audioSource.PlayOneShot(powerUpClip);
     }
 
     //炎演出を非表示にする。
@@ -121,11 +125,15 @@ public class ShuzoManager : MonoBehaviour {
     //ジャンプキーを離したときにジャンプする
     void JumpButtonUp()
     {
+
         //rigidbodyに上向きの力を加えてジャンプさせる。
         rBody.AddForce(new Vector2(0.0f, jumpPower * jumpPowerRate));
+
+        audioSource.PlayOneShot(jumpClip);
+
     }
 
-    
+
     void OnTriggerEnter2D(Collider2D col)
     {
         //もし触れたものがGoalタグならプレイヤーの位置を元に戻す。

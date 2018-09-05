@@ -23269,6 +23269,7 @@ GameObject:
   m_Component:
   - component: {fileID: 452806307}
   - component: {fileID: 452806306}
+  - component: {fileID: 452806308}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -23290,6 +23291,7 @@ MonoBehaviour:
   scoreText: {fileID: 1827618134}
   tweetButton: {fileID: 748262452}
   titleButton: {fileID: 1260278766}
+  selectClip: {fileID: 8300000, guid: 016cda2441354794fb842406b5510270, type: 3}
 --- !u!4 &452806307
 Transform:
   m_ObjectHideFlags: 0
@@ -23303,6 +23305,101 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 49
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &452806308
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 452806305}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 1d1dbfeb75631b846a89be97b9ce14f7, type: 3}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 1
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1001 &458249845
 Prefab:
   m_ObjectHideFlags: 0
@@ -83445,6 +83542,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 114641329904056230, guid: 1fc914a3c52bf084fa05f90462cf652f,
+        type: 2}
+      propertyPath: jumpClips.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4907068369353994, guid: 1fc914a3c52bf084fa05f90462cf652f, type: 2}
       propertyPath: m_LocalPosition.x
       value: -60
@@ -83489,9 +83591,24 @@ Prefab:
       objectReference: {fileID: 452806306}
     - target: {fileID: 114641329904056230, guid: 1fc914a3c52bf084fa05f90462cf652f,
         type: 2}
-      propertyPath: speedX
-      value: 0
-      objectReference: {fileID: 0}
+      propertyPath: jumpClip
+      value: 
+      objectReference: {fileID: 8300000, guid: ffa6e5822ebc810418b44538f2c7be48, type: 3}
+    - target: {fileID: 114641329904056230, guid: 1fc914a3c52bf084fa05f90462cf652f,
+        type: 2}
+      propertyPath: powerUpClip
+      value: 
+      objectReference: {fileID: 8300000, guid: d36628e977c2cda4ea60a508a9a14c89, type: 3}
+    - target: {fileID: 114641329904056230, guid: 1fc914a3c52bf084fa05f90462cf652f,
+        type: 2}
+      propertyPath: jumpClips.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: ffa6e5822ebc810418b44538f2c7be48, type: 3}
+    - target: {fileID: 114641329904056230, guid: 1fc914a3c52bf084fa05f90462cf652f,
+        type: 2}
+      propertyPath: jumpClips.Array.data[1]
+      value: 
+      objectReference: {fileID: 8300000, guid: ffa6e5822ebc810418b44538f2c7be48, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1fc914a3c52bf084fa05f90462cf652f, type: 2}
   m_IsPrefabAsset: 0

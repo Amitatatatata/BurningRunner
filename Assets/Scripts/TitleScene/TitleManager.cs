@@ -7,7 +7,10 @@ using UnityEngine.SceneManagement;
 public class TitleManager : MonoBehaviour {
     [SerializeField] Text description;  //Click to Startのテキスト
 
-    //1 = 1frame 60frameごとにdescriptionを点滅させる
+    //効果音関連
+    [SerializeField] AudioSource audioSource;
+
+    //1 = 1frame
     int timer = 0;
 
     //descriptionがアクティブかどうか
@@ -26,6 +29,7 @@ public class TitleManager : MonoBehaviour {
     
     void FixedUpdate()
     {
+        //30フレームごとにテキストを点滅させる
         timer++;
         if(timer >= 30)
         {
