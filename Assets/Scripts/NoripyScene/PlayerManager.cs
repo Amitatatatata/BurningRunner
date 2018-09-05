@@ -12,7 +12,7 @@ public class PlayerManager : MonoBehaviour {
     private Rigidbody2D rbody;//プレイヤー制御用rigidbody2D
     private Transform trans;//プレイヤーの座標系
 
-    private const float MOVE_SPEED = 5;//移動速度固定値
+    [SerializeField]private float MOVE_SPEED = 50;//移動速度固定値
     private float moveSpeed;//移動速度
     private float jumpPower = 400;//ジャンプの力
     private bool goJump = false;//ジャンプしたか否か
