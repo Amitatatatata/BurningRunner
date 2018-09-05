@@ -18,6 +18,10 @@ public class ShuzoManager : MonoBehaviour {
     //jump可能かどうか
     bool canJump = false;
 
+    //ジャンプの強さの倍率 (0.0から1.0)
+    float jumpPowerRate = 0.0f;
+
+
     //元のスピード
     private float baseSpeedX;
 
@@ -37,7 +41,7 @@ public class ShuzoManager : MonoBehaviour {
     {
         if(isDead)
         {
-            rBody.velocity = new Vector2(0, 50f);
+            rBody.velocity = new Vector2(0, -50f);
             return;
         }
 
@@ -52,8 +56,12 @@ public class ShuzoManager : MonoBehaviour {
         //プレイヤーをカメラの真ん中に常に捉える。
         camera.transform.position = new Vector3(transform.position.x, camera.transform.position.y, camera.transform.position.z);
 
+        if (Input.GetButtonDown("Jump")) JumpButtonDown();
+
+        if (Input.GetButton("Jump")) OnJumpButton();
+
         //Jump対応キーを押したらジャンプする。
-        if (canJump && Input.GetButtonDown("Jump")) Jump();
+        if (canJump && Input.GetButtonUp("Jump")) JumpButtonUp();
 
 
         
@@ -78,10 +86,21 @@ public class ShuzoManager : MonoBehaviour {
         frameImage.SetActive(false);
     }
 
-    public void Jump()
+    void JumpButtonDown()
+    {
+        jumpPowerRate = 0.5f;
+    }
+
+    void OnJumpButton()
+    {
+        if(jumpPowerRate <= 1.0f)
+        jumpPowerRate += 0.02f;
+    }
+
+    void JumpButtonUp()
     {
         //rigidbodyに上向きの力を加えてジャンプさせる。
-        rBody.AddForce(new Vector2(0.0f, jumpPower));
+        rBody.AddForce(new Vector2(0.0f, jumpPower * jumpPowerRate));
     }
 
     
@@ -102,9 +121,11 @@ public class ShuzoManager : MonoBehaviour {
         }
         
         //トゲかマグマに当たったら死亡
-        if(col.gameObject.tag == "Needle")
+        if(col.gameObject.tag == "Needle" || col.gameObject.tag == "Larva")
         {
             Debug.Log("Dead.");
+            boxCollider.enabled = false;
+            isDead = true;
         }
     }
 }
