@@ -4,10 +4,15 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class AmiGameManager : MonoBehaviour {
+    //Scoreを表示させるテキスト
     [SerializeField] Text scoreText;
+    [SerializeField] Image tweetButton; //ツイートボタン用テキスト　ゲーム終了時にアクティブにする
+    [SerializeField] Button titleButton; //タイトルへ戻るボタン　ゲーム終了時にアクティブにする
 
     private int score = 0;
 
+    //ゲーム終了かどうか
+    private bool isEnd = false;
 
     // Use this for initialization
     void Start () {
@@ -16,12 +21,32 @@ public class AmiGameManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        AddScore();
+        if(!isEnd) AddScore();
 	}
 
     public void  AddScore()
     {
         score++;
         scoreText.text = score.ToString();
+    }
+
+    public void FinishGame()
+    {
+        isEnd = true;
+        Invoke("ShowTweetButtonAndRanking", 1.0f);
+    }
+
+    public void ShowTweetButtonAndRanking()
+    {
+        naichilab.RankingLoader.Instance.SendScoreAndShowRanking(score);
+        tweetButton.gameObject.SetActive(true);
+        titleButton.gameObject.SetActive(true);
+    }
+
+    public void Tweet()
+    {
+        naichilab.UnityRoomTweet.Tweet("burning_runner",
+            "【Burning Runner】で" + score + "点だったよ！！",
+            "unityroom", "unity1week");
     }
 }
