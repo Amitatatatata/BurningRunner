@@ -10,6 +10,7 @@ public class ShuzoManager : MonoBehaviour {
     [SerializeField] private float speedX = 15.0f;      //プレイヤーの横方向の速さ
     [SerializeField] private float jumpPower = 4000.0f; //プレイヤーのジャンプ力
     [SerializeField] private AmiGameManager amiGameManager; //ゲーム制御用スクリプト（ゲームの終了、スコアの計測など）
+    [SerializeField] private float smallJumpRate = 0.5f;   //小ジャンプの強さ
 
     //自分自身のrigidbodyとcollider、AudioSource
     private Rigidbody2D rBody;
@@ -102,7 +103,7 @@ public class ShuzoManager : MonoBehaviour {
         //炎をみえるようにする。
         frameImage.SetActive(true);
 
-        audioSource.PlayOneShot(powerUpClip, 0.2f);
+        audioSource.PlayOneShot(powerUpClip, 0.05f);
     }
 
     //炎演出を非表示にする。
@@ -118,7 +119,7 @@ public class ShuzoManager : MonoBehaviour {
     void JumpButtonDown()
     {
         //すぐにキーを離してもある程度飛べるように初期値を0.7倍にする
-        jumpPowerRate = 0.7f;
+        jumpPowerRate = smallJumpRate;
     }
 
     //ジャンプキーを押しているときジャンプ力の倍率を0.01ずつ増やす
@@ -135,8 +136,8 @@ public class ShuzoManager : MonoBehaviour {
         //rigidbodyに上向きの力を加えてジャンプさせる。
         rBody.AddForce(new Vector2(0.0f, jumpPower * jumpPowerRate));
 
-        audioSource.PlayOneShot(jumpClip, 0.2f);
-        audioSource.PlayOneShot(shuzoJumpClips[Random.Range(0, shuzoJumpClips.Length)], 1.0f);
+        audioSource.PlayOneShot(jumpClip, 0.3f);
+        //audioSource.PlayOneShot(shuzoJumpClips[Random.Range(0, shuzoJumpClips.Length)], 1.0f);
     }
 
 

@@ -68,7 +68,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1249030275691584}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -60, y: -28.7, z: 90}
+  m_LocalPosition: {x: -82, y: -26, z: 90}
   m_LocalScale: {x: 8, y: 8, z: 1}
   m_Children:
   - {fileID: 4446190618528380}
@@ -249,9 +249,23 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 256
-  speedX: 15
+  speedX: 30
   jumpPower: 3000
   amiGameManager: {fileID: 0}
+  jumpClip: {fileID: 8300000, guid: 3cc5cfc7020c272458dca3e2da900eb6, type: 3}
+  powerUpClip: {fileID: 8300000, guid: d36628e977c2cda4ea60a508a9a14c89, type: 3}
+  shuzoJumpClips:
+  - {fileID: 8300000, guid: 5997d0ab1c655d445a74f2dd20adb049, type: 3}
+  - {fileID: 8300000, guid: b191e3a4a31b743499b56f2b213645ca, type: 3}
+  - {fileID: 8300000, guid: 3185680e11c73f54c89253ce2336df5b, type: 3}
+  - {fileID: 8300000, guid: e0baff2e166f29641801206cb2bc7ffc, type: 3}
+  - {fileID: 8300000, guid: df26193af6752744785b71b1d18bf1a9, type: 3}
+  - {fileID: 8300000, guid: 6bf7b5513bd31a8499cb9e1fc03745fb, type: 3}
+  - {fileID: 8300000, guid: 490f7ebaff3c32446ae7b531c77cc8ba, type: 3}
+  - {fileID: 8300000, guid: d8c06cafdd5f3c543b704b2a26ff1f10, type: 3}
+  - {fileID: 8300000, guid: 881fb3136c049f84091abce110d6da3b, type: 3}
+  - {fileID: 8300000, guid: 894a612965432274e8368f6087744978, type: 3}
+  - {fileID: 8300000, guid: b5647c841269b974ab46a5592bc4bae6, type: 3}
 --- !u!212 &212479663862144824
 SpriteRenderer:
   m_ObjectHideFlags: 1
