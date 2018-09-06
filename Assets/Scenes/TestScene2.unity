@@ -84056,6 +84056,11 @@ Prefab:
       propertyPath: shuzoJumpClips.Array.data[10]
       value: 
       objectReference: {fileID: 8300000, guid: b5647c841269b974ab46a5592bc4bae6, type: 3}
+    - target: {fileID: 114641329904056230, guid: 1fc914a3c52bf084fa05f90462cf652f,
+        type: 2}
+      propertyPath: speedX
+      value: 30
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1fc914a3c52bf084fa05f90462cf652f, type: 2}
   m_IsPrefabAsset: 0
