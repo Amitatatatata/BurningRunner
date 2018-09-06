@@ -10,6 +10,7 @@ public class AmiGameManager : MonoBehaviour {
     [SerializeField] Image tweetButton; //ツイートボタン用テキスト　ゲーム終了時にアクティブにする
     [SerializeField] Button titleButton; //タイトルへ戻るボタン　ゲーム終了時にアクティブにする
     [SerializeField] Button retryButton; //リトライボタン　シーンを読み直してもう一度遊ぶ
+    [SerializeField] Button rankingButton; //ランキングボタン ランキングを表示する
 
     private int score = 0;
 
@@ -45,15 +46,15 @@ public class AmiGameManager : MonoBehaviour {
         isEnd = true;
         audioSource.Stop();
         audioSource.PlayOneShot(shuzoResultClips[Random.Range(0, shuzoResultClips.Length)]);
-        Invoke("ShowTweetButtonAndRanking", 1.0f);
+        Invoke("ShowTweetButtonAndRanking", 0.8f);
     }
 
     public void ShowTweetButtonAndRanking()
     {
-        naichilab.RankingLoader.Instance.SendScoreAndShowRanking(score);
         tweetButton.gameObject.SetActive(true);
         titleButton.gameObject.SetActive(true);
         retryButton.gameObject.SetActive(true);
+        rankingButton.gameObject.SetActive(true);
     }
 
     public void Tweet()
@@ -71,5 +72,10 @@ public class AmiGameManager : MonoBehaviour {
     public void OnClickRetryButton()
     {
         SceneManager.LoadScene("TestScene2");
+    }
+
+    public void OnClickRankingButton()
+    {
+        naichilab.RankingLoader.Instance.SendScoreAndShowRanking(score);
     }
 }
