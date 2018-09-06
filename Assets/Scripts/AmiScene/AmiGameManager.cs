@@ -11,7 +11,7 @@ public class AmiGameManager : MonoBehaviour {
     [SerializeField] Button titleButton; //タイトルへ戻るボタン　ゲーム終了時にアクティブにする
     [SerializeField] Button retryButton; //リトライボタン　シーンを読み直してもう一度遊ぶ
     [SerializeField] Button rankingButton; //ランキングボタン ランキングを表示する
-
+    
     private int score = 0;
 
     //ゲーム終了かどうか
@@ -32,24 +32,31 @@ public class AmiGameManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if(!isEnd) AddScore();
+        
 	}
 
-    public void  AddScore()
+    //プレイヤーのX座標を点数にする。
+    public void  AddScore(int score)
     {
-        score++;
-        scoreText.text = score.ToString();
+        if (isEnd) return;
+        this.score = score;
+        scoreText.text = this.score.ToString();
     }
 
+    //ゲームを止める（終了時）
     public void FinishGame()
     {
         isEnd = true;
+        //今の音を止めて終了台詞を再生する
         audioSource.Stop();
         audioSource.PlayOneShot(shuzoResultClips[Random.Range(0, shuzoResultClips.Length)]);
-        Invoke("ShowTweetButtonAndRanking", 0.8f);
+
+        //0.8秒後に各種ボタンを表示させる
+        Invoke("ShowButtons", 0.8f);
     }
 
-    public void ShowTweetButtonAndRanking()
+    //各種ボタンを表示させる
+    public void ShowButtons()
     {
         tweetButton.gameObject.SetActive(true);
         titleButton.gameObject.SetActive(true);

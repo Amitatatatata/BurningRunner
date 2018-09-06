@@ -34,11 +34,15 @@ public class ShuzoManager : MonoBehaviour {
     //元の横方向のスピード
     private float baseSpeedX;
 
+    //最初のX座標
+    private float firstX;
+
 	void Start () {
         rBody = GetComponent<Rigidbody2D>();
         boxCollider = GetComponent<BoxCollider2D>();
         audioSource = GetComponent<AudioSource>();
         baseSpeedX = speedX;
+        firstX = transform.position.x;
 	}
 
     //Input処理はFixedUpdateに入れるとうまく動かない
@@ -47,6 +51,8 @@ public class ShuzoManager : MonoBehaviour {
         
         if (isDead) return;
 
+        amiGameManager.AddScore((int)(transform.position.x - firstX));
+
         //プレイヤーの足元から下方向に2本の線を飛ばし、Blockに触れていればジャンプ可能(true)
         canJump = (Physics2D.Linecast(transform.position + (Vector3.left * 8.2f),
                 transform.position + (Vector3.down * 1f) + (Vector3.left * 3f), groundLayer) ||
@@ -54,14 +60,14 @@ public class ShuzoManager : MonoBehaviour {
                 transform.position + (Vector3.down * 1f) + (Vector3.left * 3f), groundLayer)
                 && rBody.velocity.y < 0);
 
-        
+        /*
         Debug.Log(canJump);
 
         Debug.DrawLine(transform.position + (Vector3.left * 8.2f),
                 transform.position + (Vector3.down * 1f) + (Vector3.left * 3f));
         Debug.DrawLine(transform.position + (Vector3.right * 1.4f),
                 transform.position + (Vector3.down * 1f) + (Vector3.left * 3f));
-        
+        */
 
         //ジャンプキーを押し始めたとき
         if (Input.GetButtonDown("Jump")) JumpButtonDown();
@@ -76,6 +82,7 @@ public class ShuzoManager : MonoBehaviour {
         if(isDead)
         {
             rBody.velocity = new Vector2(0, -50f);
+            if (transform.position.y < -300.0f) Destroy(gameObject);
             return;
         }
 
@@ -150,11 +157,19 @@ public class ShuzoManager : MonoBehaviour {
         }
         
         //トゲかマグマに当たったら死亡
-        if(col.gameObject.tag == "Needle" || col.gameObject.tag == "Larva")
+        if(col.gameObject.tag == "Needle")
         {
             Dead();
         }
         
+    }
+
+    void OnCollisionEnter2D(Collision2D col)
+    {
+        if(col.gameObject.tag == "Larva")
+        {
+            Dead();
+        }
     }
 
     //死んだときの処理
