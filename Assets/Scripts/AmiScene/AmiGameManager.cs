@@ -78,7 +78,7 @@ public class AmiGameManager : MonoBehaviour {
 
     public void OnClickRetryButton()
     {
-        SceneManager.LoadScene("TestScene2");
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public void OnClickRankingButton()
