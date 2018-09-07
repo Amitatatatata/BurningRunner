@@ -32,6 +32,11 @@ public class ShuzoManager : MonoBehaviour {
     [SerializeField] AudioClip powerUpClip;
     [SerializeField] AudioClip[] shuzoJumpClips;
 
+
+    int scoreRate = 1;  //スコアの倍率
+    [SerializeField] int scoreRatio = 10; //scoreRateにかけてどれくらい増加させるか
+    int prevX = 0;
+
     //元の横方向のスピード
     private float baseSpeedX;
 
@@ -50,9 +55,14 @@ public class ShuzoManager : MonoBehaviour {
     void Update()
     {
         
+
         if (isDead) return;
 
-        amiGameManager.AddScore((int)(transform.position.x - firstX));
+        int deltaX = (int)(transform.position.x - firstX) - prevX;
+
+        amiGameManager.AddScore(deltaX * scoreRate);
+
+        prevX = (int)(transform.position.x - firstX);
 
         //プレイヤーの足元から下方向に2本の線を飛ばし、Blockに触れていればジャンプ可能(true)
         canJump = (Physics2D.Linecast(transform.position + (Vector3.left * 8.2f),
@@ -80,6 +90,7 @@ public class ShuzoManager : MonoBehaviour {
 
     void FixedUpdate()
     {
+        
         if(isDead)
         {
             rBody.velocity = new Vector2(0, -50f);
@@ -100,6 +111,9 @@ public class ShuzoManager : MonoBehaviour {
     {
         //プレイヤーの動きを激しくする。
         speedX *= 2;
+
+        scoreRate *= scoreRatio;
+
         //炎をみえるようにする。
         frameImage.SetActive(true);
 
@@ -111,6 +125,9 @@ public class ShuzoManager : MonoBehaviour {
     {
         //プレイヤーの動きを元に戻す。
         speedX = baseSpeedX;
+
+        scoreRate = 1;
+
         //炎を見えなくする。
         frameImage.SetActive(false);
     }

@@ -10,6 +10,8 @@ public class AmiGameManager : MonoBehaviour {
     [SerializeField] Button titleButton; //タイトルへ戻るボタン　ゲーム終了時にアクティブにする
     [SerializeField] Button retryButton; //リトライボタン　シーンを読み直してもう一度遊ぶ
     [SerializeField] Button rankingButton; //ランキングボタン ランキングを表示する
+    [SerializeField] GameObject levelResultLabel; //結果表示用ラベル
+    [SerializeField] Text levelResultText;  //結果表示用テキスト
     [SerializeField] GameObject[] mapUnitPrefabs;  //マップ生成用　マップユニット群
     [SerializeField] float[] mapUnitWidths;  //マップユニットの横幅 mapUnitPrefabsの添字とリンクしている
     [SerializeField] int maximumLevel;      //最大レベル数 (=ユニットの種類数）
@@ -46,9 +48,10 @@ public class AmiGameManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        Debug.DrawLine(new Vector3(destroyAndCreateMapPoint, 200), new Vector3(destroyAndCreateMapPoint, -200));
+        //Debug.DrawLine(new Vector3(destroyAndCreateMapPoint, 200), new Vector3(destroyAndCreateMapPoint, -200));
 
-        if (shuzo.transform.position.x > destroyAndCreateMapPoint) UpdateMap();
+        
+        if (!isEnd && shuzo.transform.position.x > destroyAndCreateMapPoint) UpdateMap();
 	}
 
     void InitMap()
@@ -66,8 +69,8 @@ public class AmiGameManager : MonoBehaviour {
 
     void CreateMap()
     {
-        //nowLevelが-1の時はマップの並びをランダムにする
-        if(nowLevel > -1)
+        //nowLevelがmaximumLevel以下の時はマップの並びをランダムにする
+        if(nowLevel < maximumLevel)
         {
             destroyAndCreateMapPoint = mapLeftX;
             for (int i = 0; i < unitNum; i++)
@@ -98,11 +101,8 @@ public class AmiGameManager : MonoBehaviour {
 
     void UpdateMap()
     {
-        if (nowLevel > -1)
-        {
-            nowLevel++;
-            if (nowLevel >= maximumLevel) nowLevel = -1;
-        }
+        nowLevel++;
+
         DestroyMap();
 
         for (int i = 0; i < unitNum; i++)
@@ -131,7 +131,7 @@ public class AmiGameManager : MonoBehaviour {
     public void  AddScore(int score)
     {
         if (isEnd) return;
-        this.score = score;
+        this.score += score;
         scoreText.text = this.score.ToString();
     }
 
@@ -154,12 +154,15 @@ public class AmiGameManager : MonoBehaviour {
         titleButton.gameObject.SetActive(true);
         retryButton.gameObject.SetActive(true);
         rankingButton.gameObject.SetActive(true);
+        levelResultLabel.gameObject.SetActive(true);
+
+        levelResultText.text = "あなたのレベルは " + nowLevel.ToString();
     }
 
     public void Tweet()
     {
         naichilab.UnityRoomTweet.Tweet("burning_runner",
-            "【Burning Runner】で" + score + "点だったよ！！",
+            "【Burning Runner】で" + score + "点だったよ！！レベルは" + nowLevel + "！！！",
             "unityroom", "unity1week");
     }
 
