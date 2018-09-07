@@ -38,6 +38,6 @@ public class TitleManager : MonoBehaviour {
             description.gameObject.SetActive(isDescriptionActive);
         }
 
-        if (Input.GetButtonDown("Fire1")) SceneManager.LoadScene("TestScene2");
+        if (Input.GetButtonDown("Fire1")) SceneManager.LoadScene("TestSceneForAmi");
     }
 }

@@ -5,14 +5,27 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class AmiGameManager : MonoBehaviour {
-    //Scoreを表示させるテキスト
-    [SerializeField] Text scoreText;
+    [SerializeField] Text scoreText;    //Scoreを表示させるテキスト
     [SerializeField] Image tweetButton; //ツイートボタン用テキスト　ゲーム終了時にアクティブにする
     [SerializeField] Button titleButton; //タイトルへ戻るボタン　ゲーム終了時にアクティブにする
     [SerializeField] Button retryButton; //リトライボタン　シーンを読み直してもう一度遊ぶ
     [SerializeField] Button rankingButton; //ランキングボタン ランキングを表示する
-    
+    [SerializeField] GameObject[] mapUnitPrefabs;  //マップ生成用　マップユニット群
+    [SerializeField] float[] mapUnitWidths;  //マップユニットの横幅 mapUnitPrefabsの添字とリンクしている
+    [SerializeField] int maximumLevel;      //最大レベル数 (=ユニットの種類数）
+    [SerializeField] GameObject shuzo;
+
     private int score = 0;
+    private int nowLevel = 0;  //現在のマップレベル (-1されているので注意）
+
+    //マップ関連
+    [SerializeField] int unitNum = 10;  //１マップ中のマップユニットの数
+    private float destroyAndCreateMapPoint = 0.0f;
+    private GameObject[] prevMap;       //今いるマップのひとつ前のマップ
+    private GameObject[] nowMap;        //今いるマップ
+    private GameObject[] nextMap;       //今いるマップの一つ先のマップ
+    private const float FIXED_Y = -21.4f;    //マップのY座標（常に固定）
+    private float mapLeftX = -224.0f;        //マップ中の左端ユニットのX座標
 
     //ゲーム終了かどうか
     private bool isEnd = false;
@@ -28,12 +41,91 @@ public class AmiGameManager : MonoBehaviour {
     // Use this for initialization
     void Start () {
         audioSource = GetComponent<AudioSource>();
-	}
+        InitMap();
+    }
 	
 	// Update is called once per frame
 	void Update () {
-        
+        Debug.DrawLine(new Vector3(destroyAndCreateMapPoint, 200), new Vector3(destroyAndCreateMapPoint, -200));
+
+        if (shuzo.transform.position.x > destroyAndCreateMapPoint) UpdateMap();
 	}
+
+    void InitMap()
+    {
+        //マップの配列を初期化する
+        prevMap = new GameObject[unitNum];
+        nowMap = new GameObject[unitNum];
+        nextMap = new GameObject[unitNum];
+
+        
+        destroyAndCreateMapPoint = mapLeftX;
+        //一つ目のマップを作る
+        CreateMap();
+    }
+
+    void CreateMap()
+    {
+        //nowLevelが-1の時はマップの並びをランダムにする
+        if(nowLevel > -1)
+        {
+            destroyAndCreateMapPoint = mapLeftX;
+            for (int i = 0; i < unitNum; i++)
+            {
+                nextMap[i] = (GameObject)Instantiate(mapUnitPrefabs[nowLevel]);
+                nextMap[i].transform.position = new Vector3(mapLeftX + mapUnitWidths[nowLevel], FIXED_Y, 0);
+                mapLeftX += mapUnitWidths[nowLevel];
+
+                if (i < unitNum / 2) destroyAndCreateMapPoint += mapUnitWidths[nowLevel];
+                
+            }
+        }
+        else
+        {
+            destroyAndCreateMapPoint = mapLeftX;
+            for (int i = 0; i < unitNum; i++)
+            {
+                int randomNum = Random.Range(0, maximumLevel);
+                nextMap[i] = (GameObject)Instantiate(mapUnitPrefabs[randomNum]);
+                nextMap[i].transform.position = new Vector3(mapLeftX + mapUnitWidths[randomNum], FIXED_Y, 0);
+                mapLeftX += mapUnitWidths[randomNum];
+
+                if (i < unitNum / 2) destroyAndCreateMapPoint += mapUnitWidths[randomNum];
+
+            }
+        }
+    }
+
+    void UpdateMap()
+    {
+        if (nowLevel > -1)
+        {
+            nowLevel++;
+            if (nowLevel >= maximumLevel) nowLevel = -1;
+        }
+        DestroyMap();
+
+        for (int i = 0; i < unitNum; i++)
+        {
+            prevMap[i] = nowMap[i];
+        }
+
+        for (int i = 0; i < unitNum; i++)
+        {
+            nowMap[i] = nextMap[i];
+        }
+
+        CreateMap();
+
+    }
+
+    void DestroyMap()
+    {
+        foreach(GameObject unit in prevMap)
+        {
+            if(unit != null) Destroy(unit);
+        }
+    }
 
     //プレイヤーのX座標を点数にする。
     public void  AddScore(int score)
