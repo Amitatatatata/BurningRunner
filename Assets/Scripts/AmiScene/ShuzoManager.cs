@@ -117,7 +117,7 @@ public class ShuzoManager : MonoBehaviour {
         //炎をみえるようにする。
         frameImage.SetActive(true);
 
-        audioSource.PlayOneShot(shuzoJumpClips[Random.Range(0, shuzoJumpClips.Length)], 1.0f);
+        audioSource.PlayOneShot(shuzoJumpClips[Random.Range(0, shuzoJumpClips.Length)], 0.25f);
     }
 
     //炎演出を非表示にする。

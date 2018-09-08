@@ -48,7 +48,7 @@ public class AmiGameManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        //Debug.DrawLine(new Vector3(destroyAndCreateMapPoint, 200), new Vector3(destroyAndCreateMapPoint, -200));
+        Debug.DrawLine(new Vector3(destroyAndCreateMapPoint, 200), new Vector3(destroyAndCreateMapPoint, -200));
 
         
         if (!isEnd && shuzo.transform.position.x > destroyAndCreateMapPoint) UpdateMap();
@@ -156,7 +156,7 @@ public class AmiGameManager : MonoBehaviour {
         rankingButton.gameObject.SetActive(true);
         levelResultLabel.gameObject.SetActive(true);
 
-        levelResultText.text = "あなたのレベルは " + nowLevel.ToString();
+        levelResultText.text = "Your Level is " + nowLevel.ToString();
     }
 
     public void Tweet()
