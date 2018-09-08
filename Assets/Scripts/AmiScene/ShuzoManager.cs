@@ -81,11 +81,11 @@ public class ShuzoManager : MonoBehaviour {
         */
 
         //ジャンプキーを押し始めたとき
-        if (Input.GetButtonDown("Jump")) JumpButtonDown();
+        if (Input.GetButtonDown("Fire1")) JumpButtonDown();
         //ジャンプキーを押しているとき
-        if (Input.GetButton("Jump")) OnJumpButton();
+        if (Input.GetButton("Fire1")) OnJumpButton();
         //ジャンプキーを離したときにジャンプする
-        if (canJump && Input.GetButtonUp("Jump")) JumpButtonUp();
+        if (canJump && Input.GetButtonUp("Fire1")) JumpButtonUp();
     }
 
     void FixedUpdate()
