@@ -9,9 +9,6 @@ EditorBuildSettings:
     path: Assets/Scenes/TitleScene.unity
     guid: 019cbdb1a0c9be847b6572461ef8fdfb
   - enabled: 1
-    path: Assets/Scenes/TestSceneForNoripy.unity
-    guid: 32dab39eabcc1b0409cd62f315e369e3
-  - enabled: 1
     path: Assets/Scenes/TestSceneForAmi.unity
     guid: cd211d77d20277643ba760a38e9cf952
   - enabled: 1

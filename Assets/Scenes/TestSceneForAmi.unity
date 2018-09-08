@@ -809,7 +809,7 @@ MonoBehaviour:
   - 186
   maximumLevel: 13
   shuzo: {fileID: 337145366}
-  unitNum: 3
+  unitNum: 5
   shuzoResultClips:
   - {fileID: 8300000, guid: 0c0bd92c9acdb0e4688d01dcab7ab8ba, type: 3}
   - {fileID: 8300000, guid: 2b3bccd090e39874ca786994f872cd93, type: 3}
