@@ -37,6 +37,11 @@ public class ShuzoManager : MonoBehaviour {
     [SerializeField] int scoreRatio = 10; //scoreRateにかけてどれくらい増加させるか
     int prevX = 0;
 
+    //ジャンプボタンが押されているか
+    bool onButton = false;
+    bool onSpaceButton = false;
+    bool onMouseButton = false;
+
     //元の横方向のスピード
     private float baseSpeedX;
 
@@ -81,11 +86,37 @@ public class ShuzoManager : MonoBehaviour {
         */
 
         //ジャンプキーを押し始めたとき
-        if (Input.GetButtonDown("Fire1")) JumpButtonDown();
+        if (!onButton && !onSpaceButton && Input.GetButtonDown("Jump"))
+        {
+            onButton = true;
+            onSpaceButton = true;
+            JumpButtonDown();
+        }
         //ジャンプキーを押しているとき
-        if (Input.GetButton("Fire1")) OnJumpButton();
+        else if (onSpaceButton && onButton && Input.GetButton("Jump")) OnJumpButton();
         //ジャンプキーを離したときにジャンプする
-        if (canJump && Input.GetButtonUp("Fire1")) JumpButtonUp();
+        else if (onSpaceButton && onButton && canJump && Input.GetButtonUp("Jump"))
+        {
+            JumpButtonUp();
+            onButton = false;
+            onSpaceButton = false;
+        }
+
+        if (!onButton && !onMouseButton && Input.GetButtonDown("Fire1"))
+        {
+            onButton = true;
+            onMouseButton = true;
+            JumpButtonDown();
+        }
+        //ジャンプキーを押しているとき
+        else if (onMouseButton && onButton && Input.GetButton("Fire1")) OnJumpButton();
+        //ジャンプキーを離したときにジャンプする
+        else if (onMouseButton && onButton && canJump && Input.GetButtonUp("Fire1"))
+        {
+            JumpButtonUp();
+            onButton = false;
+            onMouseButton = false;
+        }
     }
 
     void FixedUpdate()
